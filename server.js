@@ -1,12 +1,40 @@
 const dns = require('native-dns')
     , async = require('async')
+    , fs = require('fs')
+    , express = require('express')
+    , bodyParser = require('body-parser')
 
-let server = dns.createServer()
+let entries = require('./records.json')
+  , password = 'ilovekittens'
+
+  , app = express()
+
+  , server = dns.createServer()
   , authority =
   { address: '8.8.8.8'
   , port: 53
   , type: 'udp'
   }
+
+app.use(bodyParser.json())
+app.use(express.static(__dirname + '/public'))
+
+app.get('/load', (req, res) => {
+  res.send(entries)
+})
+
+app.post('/save', (req, res) => {
+  if (req.query.password === password) {
+    entries = req.body
+    fs.writeFileSync('records.json', JSON.stringify(entries))
+    res.send('ok')
+    console.log('Changed records.json')
+  } else {
+    res.status(401).send('wrong')
+  }
+})
+
+app.listen(5380)
 
 function proxy (question, response, cb) {
   console.log('proxying', question.name)
@@ -25,11 +53,6 @@ function proxy (question, response, cb) {
   request.on('end', cb)
   request.send()
 }
-
-let entries = [
-  { domain: '^hello.peteris.*', records: [ { type: 'A', address: '127.0.0.99', ttl: 1800 } ] }
-, { domain: '^cname.peteris.*', records: [ { type: 'CNAME', address: 'hello.peteris.rocks', ttl: 1800 } ] }
-]
 
 function handleRequest (request, response) {
   console.log('request from', request.address.address, 'for', request.question[0].name)
