@@ -1,0 +1,6 @@
+{
+  "extends": "clock",
+  "excludeFiles": [
+    "node_modules/**"
+  ]
+}
