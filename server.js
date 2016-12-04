@@ -24,11 +24,7 @@ app.all('*', (req, res) => {
   if (req.headers.host === adminUrl) {
     return res.render('index')
   }
-  if (req.headers.accept === '*/*') {
-    res.send('')
-  } else {
-    res.send('hello!!!!')
-  }
+  res.send('There has got to be something here.')
 })
 
 app.listen(80)
