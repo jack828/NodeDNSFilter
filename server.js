@@ -2,6 +2,7 @@ const dns = require('native-dns')
     , async = require('async')
     , fs = require('fs')
     , express = require('express')
+    , morgan = require('morgan')
     , bodyParser = require('body-parser')
 
 let entries = require('./records.json')
@@ -16,8 +17,9 @@ let entries = require('./records.json')
   , type: 'udp'
   }
 
-app.use(bodyParser.json())
-app.use(express.static(__dirname + '/public'))
+app.use(morgan('dev'))
+// app.use(bodyParser.json())
+// app.use(express.static(__dirname + '/public'))
 
 app.get('/load', (req, res) => {
   res.send(entries)
@@ -34,7 +36,16 @@ app.post('/save', (req, res) => {
   }
 })
 
-app.listen(5380)
+app.all('*', (req, res) => {
+  console.log('Proxied request:', req.headers)
+  if (req.headers.accept === '*/*') {
+    res.send('')
+  } else {
+    res.send('hello!!!!')
+  }
+})
+
+app.listen(80)
 
 function proxy (question, response, cb) {
   console.log('proxying', question.name)
