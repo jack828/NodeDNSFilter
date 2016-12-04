@@ -2,9 +2,10 @@ const dns = require('native-dns')
     , async = require('async')
     , express = require('express')
     , morgan = require('morgan')
+    , fs = require('fs')
 
-let entries = require('./records.json')
-  , adminUrl = 'admin.nodedns'
+let adminUrl = 'admin.nodedns'
+  , adUrls
 
   , app = express()
 
@@ -24,7 +25,7 @@ app.all('*', (req, res) => {
   if (req.headers.host === adminUrl) {
     return res.render('index')
   }
-  res.send('There has got to be something here.')
+  res.send('{}')
 })
 
 app.listen(80)
@@ -53,23 +54,15 @@ function handleRequest (request, response) {
   let f = []
 
   request.question.forEach(question => {
-    let entry = entries.filter(r => new RegExp(r.domain, 'i').exec(question.name))
-    if (entry.length) {
-      entry[0].records.forEach(record => {
-        record.name = question.name
-        record.ttl = record.ttl || 1800
-        if (record.type === 'CNAME') {
-          record.data = record.address
-          f.push(cb => {
-            proxy({
-              name: record.data
-            , type: dns.consts.NAME_TO_QTYPE.A
-            , class: 1
-            }, response, cb)
-          })
-        }
-        response.answer.push(dns[record.type](record))
-      })
+    let blacklist = adUrls.filter(url => new RegExp(url, 'i').exec(question.name))
+    if (blacklist.length) {
+      let record = {
+        type: 'A'
+      , address: '127.0.0.1'
+      , name: question.name
+      , ttl: 1800
+      }
+      response.answer.push(dns.A(record))
     } else {
       f.push(cb => proxy(question, response, cb))
     }
@@ -84,4 +77,8 @@ server.on('close', () => console.log('server closed', server.address()))
 server.on('error', (err, buff, req, res) => console.error(err.stack))
 server.on('socketError', (err, socket) => console.error(err))
 
-server.serve(53)
+fs.readFile('data/adlist.txt', function (err, data) {
+  adUrls = data.toString().split('\n')
+  adUrls.pop() // Remove trialing newline
+  server.serve(53)
+})

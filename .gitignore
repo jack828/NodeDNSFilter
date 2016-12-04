@@ -1,2 +1,4 @@
 node_modules
 
+# Adlist is updated seperately
+data/adlist.txt
