@@ -1,4 +1,5 @@
 [
   {"records":[{"type":"A","address":"127.0.0.1"}],"domain":"^toots\\.itv\\.com"}
 , {"records":[{"type":"A","address":"127.0.0.1"}],"domain":"^.*?\\.adverts\\.itv\\.com"}
+, {"records":[{"type":"A","address":"127.0.0.1"}],"domain":"admin.nodedns"}
 ]

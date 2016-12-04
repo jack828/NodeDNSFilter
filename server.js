@@ -1,12 +1,10 @@
 const dns = require('native-dns')
     , async = require('async')
-    , fs = require('fs')
     , express = require('express')
     , morgan = require('morgan')
-    , bodyParser = require('body-parser')
 
 let entries = require('./records.json')
-  , password = 'ilovekittens'
+  , adminUrl = 'admin.nodedns'
 
   , app = express()
 
@@ -18,26 +16,14 @@ let entries = require('./records.json')
   }
 
 app.use(morgan('dev'))
-// app.use(bodyParser.json())
-// app.use(express.static(__dirname + '/public'))
-
-app.get('/load', (req, res) => {
-  res.send(entries)
-})
-
-app.post('/save', (req, res) => {
-  if (req.query.password === password) {
-    entries = req.body
-    fs.writeFileSync('records.json', JSON.stringify(entries))
-    res.send('ok')
-    console.log('Changed records.json')
-  } else {
-    res.status(401).send('wrong')
-  }
-})
+app.set('view engine', 'pug')
+app.use(express.static(__dirname + '/public'))
 
 app.all('*', (req, res) => {
   console.log('Proxied request:', req.headers)
+  if (req.headers.host === adminUrl) {
+    return res.render('index')
+  }
   if (req.headers.accept === '*/*') {
     res.send('')
   } else {
