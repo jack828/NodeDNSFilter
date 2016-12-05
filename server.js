@@ -3,6 +3,7 @@ const dns = require('native-dns')
     , express = require('express')
     , morgan = require('morgan')
     , fs = require('fs')
+    , ip = require('ip')
 
 let adminUrl = 'admin.nodedns'
   , adUrls
@@ -58,7 +59,7 @@ function handleRequest (request, response) {
     if (blacklisted) {
       let record = {
         type: 'A'
-      , address: '127.0.0.1'
+      , address: ip.address()
       , name: question.name
       , ttl: 1800
       }

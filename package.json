@@ -21,6 +21,7 @@
     "async": "^2.1.4",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "ip": "^1.1.4",
     "morgan": "^1.7.0",
     "native-dns": "^0.7.0",
     "pug": "^2.0.0-beta6",
