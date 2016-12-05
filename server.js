@@ -25,7 +25,7 @@ app.all('*', (req, res) => {
   if (req.headers.host === adminUrl) {
     return res.render('index')
   }
-  res.send('{}')
+  res.status(404).end()
 })
 
 app.listen(80)
@@ -54,8 +54,8 @@ function handleRequest (request, response) {
   let f = []
 
   request.question.forEach(question => {
-    let blacklist = adUrls.filter(url => new RegExp(url, 'i').exec(question.name))
-    if (blacklist.length) {
+    let blacklisted = adUrls.indexOf(question.name) !== -1
+    if (blacklisted) {
       let record = {
         type: 'A'
       , address: '127.0.0.1'
@@ -77,8 +77,13 @@ server.on('close', () => console.log('server closed', server.address()))
 server.on('error', (err, buff, req, res) => console.error(err.stack))
 server.on('socketError', (err, socket) => console.error(err))
 
-fs.readFile('data/adlist.txt', function (err, data) {
+fs.readFile('data/adDomains.list', function (err, data) {
+  if (err) {
+    console.error('Couldn\'t load adDomains.list, err:', err)
+    console.error('Not blocking anything!')
+    data = ''
+  }
   adUrls = data.toString().split('\n')
-  adUrls.pop() // Remove trialing newline
+  console.log(`Loaded ${adUrls.length} ad domains.`)
   server.serve(53)
 })

@@ -1,4 +1,7 @@
 node_modules
 
-# Adlist is updated seperately
-data/adlist.txt
+# Blocked ad domains
+data/adDomains.list
+
+# User's blacklist
+data/blacklist.list

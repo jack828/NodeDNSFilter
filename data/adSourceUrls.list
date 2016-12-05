@@ -1,0 +1,56 @@
+################################################################################
+#                                                                              #
+#  These ad URLs have been taken from the Pi-Hole repository                   #
+#  And subsequently may get out of date with regards to newer lists.           #
+#  Visit https://github.com/pi-hole/pi-hole/blob/master/adlists.default        #
+#  For more information.                                                       #
+#                                                                              #
+#  Formats matter here, if domains are in raw, one-per-line format,            #
+#  put the word 'raw' before them.                                             #
+#  For hosts file format, put the word 'hosts' before them.                    #
+#  If the file contains inline comments, put the word 'inline' before them     #
+#                                                                              #
+################################################################################
+
+# The below list amalgamates several lists used previously.
+# See `https://github.com/StevenBlack/hosts` for details
+hosts https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+
+# Other lists considered safe:
+raw http://mirror1.malwaredomains.com/files/justdomains
+hosts http://sysctl.org/cameleon/hosts
+raw https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist
+raw https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
+raw https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+
+# hosts-file.net list. Updated frequently, but has been known to block legitimate sites.
+hosts https://hosts-file.net/ad_servers.txt
+
+# Mahakala list. Has been known to block legitimage domains including the entire .com range.
+# Warning: Due to the sheer size of this list, the web admin console may be unresponsive.
+#http://adblock.mahakala.is/
+
+# ADZHOSTS list. Has been known to block legitimate domains
+#http://optimate.dl.sourceforge.net/project/adzhosts/HOSTS.txt
+
+# Windows 10 telemetry list
+#https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/win10/spy.txt
+
+# Securemecca.com list - Also blocks "adult" sites (pornography/gambling etc)
+#http://securemecca.com/Downloads/hosts.txt
+
+# Quidsup's tracker list
+inline https://raw.githubusercontent.com/quidsup/notrack/master/trackers.txt
+
+# Block the BBC News website Breaking News banner
+#https://raw.githubusercontent.com/BreakingTheNews/BreakingTheNews.github.io/master/hosts
+
+# Untested Lists:
+#https://raw.githubusercontent.com/reek/anti-adblock-killer/master/anti-adblock-killer-filters.txt
+#https://raw.githubusercontent.com/Dawsey21/Lists/master/main-blacklist.txt
+#http://malwaredomains.lehigh.edu/files/domains.txt
+# Following two lists should be used simultaneously: (readme https://github.com/notracking/hosts-blocklists/)
+#https://raw.github.com/notracking/hosts-blocklists/master/hostnames.txt
+#https://raw.github.com/notracking/hosts-blocklists/master/domains.txt
+# Combination of serveral host files on the internet (warning some facebook domains are also blocked but you can go to facebook.com). See https://github.com/mat1th/Dns-add-block for more information.
+#https://raw.githubusercontent.com/mat1th/Dns-add-block/master/hosts
