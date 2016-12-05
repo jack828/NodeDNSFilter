@@ -4,6 +4,7 @@ const dns = require('native-dns')
     , morgan = require('morgan')
     , fs = require('fs')
     , ip = require('ip')
+    , ipAddress = ip.address()
 
 let adminUrl = 'admin.nodedns'
   , adUrls
@@ -17,12 +18,16 @@ let adminUrl = 'admin.nodedns'
   , type: 'udp'
   }
 
+if (process.env.NODE_ENV === 'production') {
+  console.info = () => {}
+}
+
 app.use(morgan('dev'))
 app.set('view engine', 'pug')
 app.use(express.static(__dirname + '/public'))
 
 app.all('*', (req, res) => {
-  console.log('Proxied request:', req.headers)
+  console.info('Proxied request:', req.headers)
   if (req.headers.host === adminUrl) {
     return res.render('index')
   }
@@ -32,7 +37,7 @@ app.all('*', (req, res) => {
 app.listen(80)
 
 function proxy (question, response, cb) {
-  console.log('proxying', question.name)
+  console.info('proxying', question.name)
 
   var request = dns.Request({
     question: question // forwarding the question
@@ -50,20 +55,21 @@ function proxy (question, response, cb) {
 }
 
 function handleRequest (request, response) {
-  console.log('request from', request.address.address, 'for', request.question[0].name)
+  console.info('request from', request.address.address, 'for', request.question[0].name)
 
   let f = []
 
   request.question.forEach(question => {
-    let blacklisted = adUrls.indexOf(question.name) !== -1
+    let blacklisted = adUrls.indexOf(question.name.toLowerCase()) !== -1
     if (blacklisted) {
       let record = {
-        type: 'A'
-      , address: ip.address()
+        type: 1
+      , class: 1
+      , address: ipAddress
       , name: question.name
       , ttl: 1800
       }
-      response.answer.push(dns.A(record))
+      response.answer.push(record)
     } else {
       f.push(cb => proxy(question, response, cb))
     }
