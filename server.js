@@ -54,6 +54,7 @@ app.all('*', (req, res) => {
   logger.info('Proxied request:', req.headers)
   if (req.headers.host === adminUrl) {
     getStats(logFile, (err, summary) => {
+      summary.adUrls = adUrls.length - 1
       res.render('index', summary)
     })
   } else {
@@ -120,6 +121,6 @@ fs.readFile('data/adDomains.list', function (err, data) {
   }
   adUrls = data.toString().split('\n')
   adUrls.push(adminUrl)
-  logger.info(`Loaded ${adUrls.length} ad domains.`)
+  logger.info(`Loaded ${adUrls.length - 1} ad domains.`)
   server.serve(53)
 })
