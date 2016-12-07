@@ -5,3 +5,6 @@ data/adDomains.list
 
 # User's blacklist
 data/blacklist.list
+
+# Logs
+logs/log*
