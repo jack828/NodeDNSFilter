@@ -4,6 +4,7 @@ const dns = require('native-dns')
     , morgan = require('morgan')
     , winston = require('winston')
     , fs = require('fs')
+    , getStats = require('./lib/get-stats')
     , ip = require('ip')
     , ipAddress = ip.address()
     , env = process.env.NODE_ENV || 'development'
@@ -52,9 +53,12 @@ app.use(express.static(__dirname + '/public'))
 app.all('*', (req, res) => {
   logger.info('Proxied request:', req.headers)
   if (req.headers.host === adminUrl) {
-    return res.render('index')
+    getStats(logFile, (err, summary) => {
+      res.render('index', summary)
+    })
+  } else {
+    res.status(404).end()
   }
-  res.status(404).end()
 })
 
 app.listen(80)
