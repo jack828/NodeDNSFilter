@@ -8,6 +8,8 @@ const dns = require('native-dns')
     , ipAddress = ip.address()
     , env = process.env.NODE_ENV || 'development'
     , logLevel = env === 'development' ? 'debug' : 'info'
+    , logFile = process.env.LOG_FILE || './logs/log'
+
 require('winston-daily-rotate-file')
 
 let adminUrl = 'admin.nodedns'
@@ -23,7 +25,7 @@ let adminUrl = 'admin.nodedns'
   }
 
   , transport = new winston.transports.DailyRotateFile(
-    { filename: './logs/log'
+    { filename: logFile
     , datePattern: '.yyyy-MM-dd.log'
     , level: logLevel
     , zippedArchive: true
@@ -76,13 +78,14 @@ function proxy (question, response, cb) {
 }
 
 function handleRequest (request, response) {
-  logger.info('Received request', { from: request.address.address, for: request.question[0].name })
+  logger.info('received', { from: request.address.address, for: request.question[0].name })
 
   let f = []
 
   request.question.forEach(question => {
     let blacklisted = adUrls.indexOf(question.name.toLowerCase()) !== -1
     if (blacklisted) {
+      logger.info('caught', { destination: question.name })
       let record = {
         type: 1
       , class: 1
