@@ -91,6 +91,7 @@ fs.readFile('data/adDomains.list', function (err, data) {
     data = ''
   }
   adUrls = data.toString().split('\n')
+  adUrls.push(adminUrl)
   console.log(`Loaded ${adUrls.length} ad domains.`)
   server.serve(53)
 })
