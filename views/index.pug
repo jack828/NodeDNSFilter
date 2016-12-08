@@ -26,7 +26,7 @@ html(lang='en')
       header.header.black-bg
         .sidebar-toggle-box
           .fa.fa-bars.tooltips(data-placement='right', data-original-title='Toggle Navigation')
-        a.logo(href='index.html')
+        a.logo(href='#dashboard')
           b Node DNS Admin
 
       //MAIN SIDEBAR MENU
@@ -36,11 +36,10 @@ html(lang='en')
           // sidebar menu start
           ul#nav-accordion.sidebar-menu
             p.centered
-              a(href='profile.html')
-                img.img-circle(src='assets/img/ui-sam.jpg', width='60')
-            h5.centered Dashboard
+              img.img-circle(src='assets/img/ui-sam.jpg', width='60')
+            h5.centered No Mo Ads!
             li.mt
-              a.active(href='index.html')
+              a.active(href='#dashboard')
                 i.fa.fa-dashboard
                 span Dashboard
             li.sub-menu
@@ -64,7 +63,7 @@ html(lang='en')
           .row
             .col-lg-12.main-chart
               .row.mtbox
-                .col-md-2.col-sm-2.col-md-offset-1.box0
+                .col-md-2.col-md-offset-1.col-sm-2.col-sm-offset-1.box0
                   .box1
                     span.fa.fa-hand-stop-o
                     h3=caught.total
@@ -79,7 +78,7 @@ html(lang='en')
                     span.fa.fa-pie-chart
                     - var percent = ((caught.total / incoming.total) * 100).toFixed(2) + '%'
                     h3=percent
-                  p Of todays traffic was ads
+                  p Of today's traffic is ads
                 .col-md-2.col-sm-2.box0
                   .box1
                     span.fa.fa-list
@@ -129,7 +128,7 @@ html(lang='en')
                     .centered
                       img(src='assets/img/product.png', width='120')
                 // /col-md-4
-                .col-md-4.mb
+                .col-md-4.col-sm-4.mb
                   // WHITE PANEL - TOP USER
                   .white-panel.pn
                     .white-header
@@ -149,7 +148,7 @@ html(lang='en')
               // /row
               .row
                 // TWITTER PANEL
-                .col-md-4.mb
+                .col-md-4.col-sm-4.mb
                   .darkblue-panel.pn
                     .darkblue-header
                       h5 DROPBOX STATICS
@@ -175,7 +174,7 @@ html(lang='en')
                       .pull-right
                         h5 60% Used
                 // /col-md-4
-                .col-md-4.mb
+                .col-md-4.col-sm-4.mb
                   // INSTAGRAM PANEL
                   .instagram-panel.pn
                     i.fa.fa-instagram.fa-4x
@@ -249,7 +248,7 @@ html(lang='en')
       footer.site-footer
         .text-center
           | 2014 - Alvarez.is
-          a.go-top(href='index.html#')
+          a.go-top(href='#')
             i.fa.fa-angle-up
       // footer end
     // js placed at the end of the document so the pages load faster
