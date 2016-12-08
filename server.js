@@ -55,6 +55,7 @@ app.all('*', (req, res) => {
   if (req.headers.host === adminUrl) {
     getStats(logFile, (err, summary) => {
       summary.adUrls = adUrls.length - 1
+      console.log(summary)
       res.render('index', summary)
     })
   } else {
