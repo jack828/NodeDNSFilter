@@ -24,7 +24,7 @@ html(lang='en')
     section#container
       header.header.black-bg
         .sidebar-toggle-box
-          .fa.fa-bars.tooltips(data-placement='right', data-original-title='Toggle Navigation')
+          .fa.fa-bars.js-sidebar-toggle.tooltips(data-placement='right', data-original-title='Toggle Navigation')
         a.logo(href='#dashboard')
           b Node DNS Admin
 
@@ -260,3 +260,8 @@ html(lang='en')
     script(src='assets/js/common-scripts.js')
     // script for this page
     script(src='assets/js/sparkline-chart.js')
+
+    script.
+      $(document).on('ready', function () {
+        $('.js-sidebar-toggle').trigger('click')
+      })
