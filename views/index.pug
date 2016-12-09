@@ -96,7 +96,7 @@ html(lang='en')
                       h5 TOP DESTINATIONS
                     .row
                       .col-xs-12
-                        table.table.table-striped
+                        table.table.table-striped.stats-table
                           tbody.text-center
                             - for (var i = 0; i < incoming.topKeys.length; i++)
                               tr
@@ -110,7 +110,7 @@ html(lang='en')
                       h5 TOP CAUGHT ADS
                     .row
                       .col-xs-12
-                        table.table.table-striped
+                        table.table.table-striped.stats-table
                           tbody.text-center
                             - for (var i = 0; i < caught.topKeys.length; i++)
                               tr
@@ -124,7 +124,7 @@ html(lang='en')
                       h5 TOP SOURCES
                     .row
                       .col-xs-12
-                        table.table.table-striped
+                        table.table.table-striped.stats-table
                           tbody.text-center
                             - for (var i = 0; i < sources.topKeys.length; i++)
                               tr
@@ -132,6 +132,7 @@ html(lang='en')
                                 td=sources.topValues[i]
                                 td=sources.topPercent[i]
 
+              .row
                 .col-md-4.col-sm-6.mb
                   .white-panel.pn
                     .white-header
@@ -145,7 +146,6 @@ html(lang='en')
                                 td=name
                                 td=val
 
-              .row
                 .col-md-4.col-sm-4.mb
                   .darkblue-panel.pn
                     .darkblue-header

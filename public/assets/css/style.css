@@ -2244,3 +2244,7 @@ label {
   margin-right: 0;
   margin-left: 0;
 }
+
+.stats-table tbody tr > td:first-child {
+  word-break: break-word;
+}
