@@ -154,20 +154,20 @@ html(lang='en')
                     script.
                       var trafficData = [
                         { value : #{incoming.total - caught.total}
-                        , color : '#97200F'
+                        , color : '#68dff0'
                         }
                       , { value: #{caught.total}
-                        , color:'#68dff0'
+                        , color:'#97200F'
                         }
                       ]
                       var trafficType = new Chart(document.getElementById('trafficType').getContext('2d')).Doughnut(trafficData)
                     footer
                       .pull-left.text-left
                         h5
-                          i.fa.fa-square(style='color: #97200F;')
+                          i.fa.fa-square(style='color: #68dff0;')
                           |&nbsp;All Requests
                         h5
-                          i.fa.fa-square(style='color: #68dff0;')
+                          i.fa.fa-square(style='color: #97200F;')
                           |&nbsp;Requests Caught
 
                 // /col-md-4
