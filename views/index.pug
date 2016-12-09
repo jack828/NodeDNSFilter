@@ -119,6 +119,19 @@ html(lang='en')
                 .col-md-4.col-sm-6.mb
                   .white-panel.pn
                     .white-header
+                      h5 TOP SOURCES
+                    .row
+                      .col-xs-12
+                        table.table.table-striped
+                          tbody.text-center
+                            - for (var i = 0; i < sources.topKeys.length; i++)
+                              tr
+                                td=sources.topKeys[i]
+                                td=sources.topValues[i]
+
+                .col-md-4.col-sm-6.mb
+                  .white-panel.pn
+                    .white-header
                       h5 SERVER STATISTICS
                     .row
                       .col-xs-12
