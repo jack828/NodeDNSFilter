@@ -60,117 +60,116 @@ html(lang='en')
       section#main-content
         section.wrapper
           .row
-            .col-lg-12.main-chart
-              .row.mtbox
-                .col-md-2.col-md-offset-1.col-sm-2.col-sm-offset-1.box0
-                  .box1
-                    span.fa.fa-hand-stop-o
-                    h3=caught.total
-                  p Ads blocked today
-                .col-md-2.col-sm-2.box0
-                  .box1
-                    span.fa.fa-globe
-                    h3=incoming.total
-                  p DNS queries today
-                .col-md-2.col-sm-2.box0
-                  .box1
-                    span.fa.fa-pie-chart
-                    - var percent = ((caught.total / incoming.total) * 100).toFixed(2) + '%'
-                    h3=percent
-                  p Of today's traffic is ads
-                .col-md-2.col-sm-2.box0
-                  .box1
-                    span.fa.fa-list
-                    h3=adUrls
-                  p Domains blocked
-                .col-md-2.col-sm-2.box0
-                  .box1
-                    span.fa.fa-check-circle-o
-                    h3 OK!
-                  p Your server is working perfectly. Relax &amp; enjoy.
-              // /row mt
-              .row.mt
-                .col-md-6.col-sm-6.mb
-                  .white-panel.pn
-                    .white-header
-                      h5 TOP DESTINATIONS
-                    .row
-                      .col-xs-12
-                        table.table.table-striped.stats-table
-                          tbody.text-center
-                            - for (var i = 0; i < incoming.topKeys.length; i++)
-                              tr
-                                td=incoming.topKeys[i]
-                                td=incoming.topValues[i]
-                                td=incoming.topPercent[i]
+            .row.mtbox
+              .col-md-2.col-md-offset-1.col-sm-2.col-sm-offset-1.box0
+                .box1
+                  span.fa.fa-hand-stop-o
+                  h3=caught.total
+                p Ads blocked today
+              .col-md-2.col-sm-2.box0
+                .box1
+                  span.fa.fa-globe
+                  h3=incoming.total
+                p DNS queries today
+              .col-md-2.col-sm-2.box0
+                .box1
+                  span.fa.fa-pie-chart
+                  - var percent = ((caught.total / incoming.total) * 100).toFixed(2) + '%'
+                  h3=percent
+                p Of today's traffic is ads
+              .col-md-2.col-sm-2.box0
+                .box1
+                  span.fa.fa-list
+                  h3=adUrls
+                p Domains blocked
+              .col-md-2.col-sm-2.box0
+                .box1
+                  span.fa.fa-check-circle-o
+                  h3 OK!
+                p Your server is working perfectly. Relax &amp; enjoy.
+            // /row mt
+            .row.mt
+              .col-md-6.col-sm-6.mb
+                .white-panel.pn
+                  .white-header
+                    h5 TOP DESTINATIONS
+                  .row
+                    .col-xs-12
+                      table.table.table-striped.stats-table
+                        tbody.text-center
+                          - for (var i = 0; i < incoming.topKeys.length; i++)
+                            tr
+                              td=incoming.topKeys[i]
+                              td=incoming.topValues[i]
+                              td=incoming.topPercent[i]
 
-                .col-md-6.col-sm-6.mb
-                  .white-panel.pn
-                    .white-header
-                      h5 TOP CAUGHT ADS
-                    .row
-                      .col-xs-12
-                        table.table.table-striped.stats-table
-                          tbody.text-center
-                            - for (var i = 0; i < caught.topKeys.length; i++)
-                              tr
-                                td=caught.topKeys[i]
-                                td=caught.topValues[i]
-                                td=caught.topPercent[i]
+              .col-md-6.col-sm-6.mb
+                .white-panel.pn
+                  .white-header
+                    h5 TOP CAUGHT ADS
+                  .row
+                    .col-xs-12
+                      table.table.table-striped.stats-table
+                        tbody.text-center
+                          - for (var i = 0; i < caught.topKeys.length; i++)
+                            tr
+                              td=caught.topKeys[i]
+                              td=caught.topValues[i]
+                              td=caught.topPercent[i]
 
-              .row
-                .col-md-4.col-sm-6.mb
-                  .white-panel.pn
-                    .white-header
-                      h5 TOP SOURCES
-                    .row
-                      .col-xs-12
-                        table.table.table-striped.stats-table
-                          tbody.text-center
-                            - for (var i = 0; i < sources.topKeys.length; i++)
-                              tr
-                                td=sources.topKeys[i]
-                                td=sources.topValues[i]
-                                td=sources.topPercent[i]
+            .row
+              .col-md-4.col-sm-6.mb
+                .white-panel.pn
+                  .white-header
+                    h5 TOP SOURCES
+                  .row
+                    .col-xs-12
+                      table.table.table-striped.stats-table
+                        tbody.text-center
+                          - for (var i = 0; i < sources.topKeys.length; i++)
+                            tr
+                              td=sources.topKeys[i]
+                              td=sources.topValues[i]
+                              td=sources.topPercent[i]
 
-                .col-md-4.col-sm-6.mb
-                  .white-panel.pn
-                    .white-header
-                      h5 SERVER STATISTICS
-                    .row
-                      .col-xs-12
-                        table.table.table-striped
-                          tbody.text-center
-                            each val, name in statistics
-                              tr
-                                td=name
-                                td=val
+              .col-md-4.col-sm-6.mb
+                .white-panel.pn
+                  .white-header
+                    h5 SERVER STATISTICS
+                  .row
+                    .col-xs-12
+                      table.table.table-striped
+                        tbody.text-center
+                          each val, name in statistics
+                            tr
+                              td=name
+                              td=val
 
-                .col-md-4.col-sm-4.mb
-                  .darkblue-panel.pn
-                    .darkblue-header
-                      h5 TRAFFIC TYPE
-                    canvas#trafficType(height='120', width='120')
-                    script.
-                      var trafficData = [
-                        { value : #{incoming.total - caught.total}
-                        , color : '#68dff0'
-                        }
-                      , { value: #{caught.total}
-                        , color:'#97200F'
-                        }
-                      ]
-                      var trafficType = new Chart(document.getElementById('trafficType').getContext('2d')).Doughnut(trafficData)
-                    footer
-                      .pull-left.text-left
-                        h5
-                          i.fa.fa-square(style='color: #68dff0;')
-                          |&nbsp;All Requests
-                        h5
-                          i.fa.fa-square(style='color: #97200F;')
-                          |&nbsp;Requests Caught
+              .col-md-4.col-sm-4.mb
+                .darkblue-panel.pn
+                  .darkblue-header
+                    h5 TRAFFIC TYPE
+                  canvas#trafficType(height='120', width='120')
+                  script.
+                    var trafficData = [
+                      { value : #{incoming.total - caught.total}
+                      , color : '#68dff0'
+                      }
+                    , { value: #{caught.total}
+                      , color:'#97200F'
+                      }
+                    ]
+                    var trafficType = new Chart(document.getElementById('trafficType').getContext('2d')).Doughnut(trafficData)
+                  footer
+                    .pull-left.text-left
+                      h5
+                        i.fa.fa-square(style='color: #68dff0;')
+                        |&nbsp;All Requests
+                      h5
+                        i.fa.fa-square(style='color: #97200F;')
+                        |&nbsp;Requests Caught
 
-                // /col-md-4
+              // /col-md-4
       // main content end
       // footer start
       footer.site-footer
