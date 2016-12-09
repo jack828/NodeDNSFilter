@@ -5,8 +5,7 @@ const dns = require('native-dns')
     , winston = require('winston')
     , fs = require('fs')
     , getStats = require('./lib/get-stats')
-    , ip = require('ip')
-    , ipAddress = ip.address()
+    , ip = require('./lib/get-ip')
     , env = process.env.NODE_ENV || 'development'
     , logLevel = env === 'development' ? 'debug' : 'info'
     , logFile = process.env.LOG_FILE || './logs/log'
@@ -95,7 +94,7 @@ function handleRequest (request, response) {
       let record = {
         type: 1
       , class: 1
-      , address: ipAddress
+      , address: ip()
       , name: question.name
       , ttl: 1800
       }
