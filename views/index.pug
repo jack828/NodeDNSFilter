@@ -58,7 +58,7 @@ html(lang='en')
         ******* MAIN CONTENT ********
       // main content start
       section#main-content
-        section.wrapper
+        section.wrapper.js-dashboard
           if error
             .row.mtbox
               .col-xs-12.box0
@@ -182,7 +182,17 @@ html(lang='en')
                         i.fa.fa-square(style='color: #97200F;')
                         |&nbsp;Requests Caught
 
-              // /col-md-4
+        section.wrapper.js-config-general.hidden
+          .row.text-center
+            h1 General Config
+
+        section.wrapper.js-config-whitelist.hidden
+          .row.text-center
+            h1 Whitelist
+
+        section.wrapper.js-config-blacklist.hidden
+          .row.text-center
+            h1 Blacklist
       // main content end
       // footer start
       footer.site-footer
@@ -206,3 +216,9 @@ html(lang='en')
       $(document).on('ready', function () {
         $('.js-sidebar-toggle').trigger('click')
       })
+
+      window.onhashchange = function () {
+        var hash = window.location.hash.replace('#', '')
+        $('section.wrapper').not('.hidden').addClass('hidden')
+        $('section.wrapper.js-' + hash).removeClass('hidden')
+      }
