@@ -55,6 +55,8 @@ app.all('*', (req, res) => {
     stats.get(logFile, (err, summary) => {
       if (err) {
         summary = stats.summaryDefault
+        summary.error = err
+        logger.error(err)
       }
       summary.adUrls = adUrls.length - 1
       console.log(summary)

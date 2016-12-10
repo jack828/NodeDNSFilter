@@ -59,6 +59,13 @@ html(lang='en')
       // main content start
       section#main-content
         section.wrapper
+          if error
+            .row.mtbox
+              .col-xs-12.box0
+                .box1
+                  span.fa.fa-warning
+                  h3 Woah there cowperson! There's been an error.
+                p=error
           .row
             .row.mtbox
               .col-md-2.col-md-offset-1.col-sm-2.col-sm-offset-1.box0
@@ -83,10 +90,16 @@ html(lang='en')
                   h3=adUrls
                 p Domains blocked
               .col-md-2.col-sm-2.box0
-                .box1
-                  span.fa.fa-check-circle-o
-                  h3 OK!
-                p Your server is working perfectly. Relax &amp; enjoy.
+                if error
+                  .box1
+                    span.fa.fa-warning
+                    h3 Oh no!
+                  p Something seems to be wrong. Check your logs for more information.
+                else
+                  .box1
+                    span.fa.fa-check-circle-o
+                    h3 OK!
+                  p Your server is working perfectly. Relax &amp; enjoy.
             // /row mt
             .row.mt
               .col-md-6.col-sm-6.mb
