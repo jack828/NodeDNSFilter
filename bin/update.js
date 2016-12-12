@@ -5,6 +5,8 @@ const request = require('request')
     , blacklistFile = 'data/blacklist.list'
     , adDomainsFile = 'data/adDomains.list'
 
+let unique = (arr) => [...new Set(arr)]
+
 fs.readFile(adSourceUrlsFile, function (err, data) {
   if (err) {
     console.error('Couldn\'t read `adUrls.list`, aborting:', err)
@@ -91,12 +93,13 @@ function writeAdList (adDomainsList, blacklist) {
     }
 
     adDomainsList = adDomainsList.concat(blacklist)
+    adDomainsList = unique(adDomainsList)
     fs.writeFile(adDomainsFile, adDomainsList.join('\n'), function (err) {
       if (err) {
         console.error(`Couldn't write to ${adDomainsFile}, aborting: ${err}`)
         return
       }
-      console.log('Wrote domains to', adDomainsFile)
+      console.log(`Wrote ${adDomainsList.length} domains to`, adDomainsFile)
     })
   })
 }
