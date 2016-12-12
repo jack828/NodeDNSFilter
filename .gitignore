@@ -3,8 +3,9 @@ node_modules
 # Blocked ad domains
 data/adDomains.list
 
-# User's blacklist
+# User's lists
 data/blacklist.list
+data/whitelist.list
 
 # Logs
 logs/log*

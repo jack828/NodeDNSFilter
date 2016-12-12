@@ -14,6 +14,7 @@ require('winston-daily-rotate-file')
 
 let adminUrl = 'admin.nodedns'
   , adUrls
+  , whitelist
 
   , app = express()
 
@@ -93,6 +94,11 @@ function handleRequest (request, response) {
   let f = []
 
   request.question.forEach(question => {
+    let whitelisted = whitelist.indexOf(question.name.toLowerCase()) !== -1
+    if (whitelisted) {
+      f.push(cb => proxy(question, response, cb))
+      return
+    }
     let blacklisted = adUrls.indexOf(question.name.toLowerCase()) !== -1
     if (blacklisted) {
       logger.info('caught', { destination: question.name })
@@ -127,5 +133,14 @@ fs.readFile('data/adDomains.list', function (err, data) {
   adUrls = data.toString().split('\n')
   adUrls.push(adminUrl)
   logger.info(`Loaded ${adUrls.length - 1} ad domains.`)
-  server.serve(53)
+  fs.readFile('data/whistelist.list', function (err, data) {
+    if (err) {
+      logger.error('Couldn\'t load whitelist.list, err:', err)
+      data = ''
+    }
+    whitelist = data.toString().split('\n')
+    logger.info(`Whitelisted ${whitelist.length} domains.`)
+
+    server.serve(53)
+  })
 })
