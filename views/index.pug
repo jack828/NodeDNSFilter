@@ -185,6 +185,23 @@ html(lang='en')
         section.wrapper.js-config-general.hidden
           .row.text-center
             h1 General Config
+            .row.mt
+              .col-xs-12
+                .form-panel
+                  form.form-horizontal.style-form.js-config-general--form
+                    .form-group
+                      label.col-sm-2.control-label Admin Url
+                      .col-sm-10
+                        input.form-control.js-config-general--adminUrl(type='text', value=settings.adminUrl, required)
+                        span.help-block This is the URL you can access this admin site from.
+                    .form-group
+                      label.col-sm-2.control-label DNS Authority
+                      .col-sm-10
+                        input.form-control.js-config-general--dnsAuthority(type='text', value=settings.dnsAuthority, required)
+                        span.help-block This is DNS authority requests are forwarded to.
+                    .form-group
+                      .col-xs-12.text-right
+                        button.btn.btn-lg.btn-default.js-config-general--save(type='submit', disabled) SAVE CHANGES
 
         section.wrapper.js-config-whitelist.hidden
           .row.text-center

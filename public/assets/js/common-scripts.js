@@ -99,4 +99,27 @@ $(document).on('ready', function () {
       }, 2000)
     })
   }
+
+  // Form buttons
+  $('.js-config-general--form :input').one('input', function () {
+    $('.js-config-general--save')
+        .removeAttr('disabled')
+        .removeClass('btn-default')
+        .addClass('btn-theme')
+  })
+
+  $('.js-config-general--save').on('click', function (e) {
+    e.preventDefault()
+    $.ajax({
+      url: '/api/set'
+    , method: 'POST'
+    , data:
+      { adminUrl: $('.js-config-general--adminUrl').val()
+      , dnsAuthority: $('.js-config-general--dnsAuthority').val()
+      }
+    , json: true
+    , success: function () {}
+    , error: function () {}
+    })
+  })
 })
