@@ -14,8 +14,7 @@ const dns = require('native-dns')
 
 require('winston-daily-rotate-file')
 
-let settings
-  , adUrls
+let adUrls
   , whitelist
 
   , app = express()
@@ -54,11 +53,23 @@ app.use(express.static(__dirname + '/public'))
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.post('/api/set', (req, res) => {
+  if (req.body.adminUrl) {
+    loadAdminUrl(config.get('adminUrl'), req.body.adminUrl)
+    config.set('adminUrl', req.body.adminUrl)
+  }
+  if (req.body.dnsAuthority) {
+    config.set('dnsAuthority', req.body.dnsAuthority)
+  }
+  config.save((err) => {
+    if (err) return res.send(500).json(err)
+    res.sendStatus(200)
+  })
+
 })
 
 app.all('*', (req, res) => {
   logger.info('Proxied request:', req.headers)
-  if (req.headers.host === settings.adminUrl) {
+  if (req.headers.host === config.get('adminUrl')) {
     stats.get(logFile, (err, summary) => {
       if (err) {
         summary = stats.summaryDefault
@@ -66,7 +77,7 @@ app.all('*', (req, res) => {
         logger.error(err)
       }
       summary.adUrls = adUrls.length - 1
-      summary.settings = settings
+      summary.settings = config.get()
       console.log(summary)
       res.render('index', summary)
     })
@@ -76,6 +87,11 @@ app.all('*', (req, res) => {
 })
 
 app.listen(80)
+
+function loadAdminUrl (oldUrl, newUrl) {
+  let pos = adUrls.indexOf(oldUrl)
+  if (pos) adUrls[pos] = newUrl
+}
 
 function proxy (question, response, cb) {
   logger.info('proxying', { destination: question.name })
@@ -138,11 +154,11 @@ fs.readFile('data/adDomains.list', function (err, data) {
     data = ''
   }
 
-  settings = config.load()
-  authority.address = settings.dnsAuthority
+  config.load()
+  authority.address = config.get('dnsAuthority')
 
   adUrls = data.toString().split('\n')
-  adUrls.push(settings.adminUrl)
+  adUrls.push(config.get('adminUrl'))
 
   logger.info(`Loaded ${adUrls.length - 1} ad domains.`)
   fs.readFile('data/whitelist.list', function (err, data) {
