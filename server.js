@@ -74,16 +74,16 @@ app.post('/api/set', (req, res) => {
 app.all('*', (req, res) => {
   logger.info('Proxied request:', req.headers)
   if (req.headers.host === config.get('adminUrl')) {
-    stats.get(logFile, (err, summary) => {
+    stats.get(logFile, (err, data) => {
       if (err) {
-        summary = stats.summaryDefault
-        summary.error = err
+        data = stats.summaryDefault
+        data.error = err
         logger.error(err)
       }
-      summary.adUrls = adUrls.length - 1
-      summary.settings = config.get()
-      console.log(summary)
-      res.render('index', summary)
+      data.adUrls = adUrls.length - 1
+      data.settings = config.get()
+      console.log(data)
+      res.render('index', data)
     })
   } else {
     res.status(404).end()
