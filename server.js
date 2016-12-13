@@ -142,7 +142,7 @@ fs.readFile('data/adDomains.list', function (err, data) {
   adUrls = data.toString().split('\n')
   adUrls.push(adminUrl)
   logger.info(`Loaded ${adUrls.length - 1} ad domains.`)
-  fs.readFile('data/whistelist.list', function (err, data) {
+  fs.readFile('data/whitelist.list', function (err, data) {
     if (err) {
       logger.error('Couldn\'t load whitelist.list, err:', err)
       data = ''
