@@ -117,7 +117,6 @@ $(document).on('ready', function () {
       { adminUrl: $('.js-config-general--adminUrl').val()
       , dnsAuthority: $('.js-config-general--dnsAuthority').val()
       }
-    , json: true
     , success: function () {}
     , error: function () {}
     })

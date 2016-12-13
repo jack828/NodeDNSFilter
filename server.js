@@ -2,6 +2,7 @@ const dns = require('native-dns')
     , async = require('async')
     , express = require('express')
     , morgan = require('morgan')
+    , bodyParser = require('body-parser')
     , winston = require('winston')
     , fs = require('fs')
     , stats = require('./lib/stats')
@@ -49,6 +50,10 @@ if (env === 'production') {
 app.use(morgan('dev'))
 app.set('view engine', 'pug')
 app.use(express.static(__dirname + '/public'))
+app.use(bodyParser.urlencoded({ extended: true }))
+
+app.post('/api/set', (req, res) => {
+})
 
 app.all('*', (req, res) => {
   logger.info('Proxied request:', req.headers)
