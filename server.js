@@ -65,6 +65,10 @@ app.all('*', (req, res) => {
         logger.error(err)
       }
       summary.adUrls = adUrls.length - 1
+      summary.settings = {
+        adminUrl: adminUrl
+      , dnsAuthority: dnsAuthority
+      }
       console.log(summary)
       res.render('index', summary)
     })
