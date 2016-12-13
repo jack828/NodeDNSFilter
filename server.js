@@ -7,13 +7,14 @@ const dns = require('native-dns')
     , fs = require('fs')
     , stats = require('./lib/stats')
     , ip = require('./lib/get-ip')
+    , config = require('./lib/config')
     , env = process.env.NODE_ENV || 'development'
     , logLevel = env === 'development' ? 'debug' : 'info'
     , logFile = process.env.LOG_FILE || './logs/log'
 
 require('winston-daily-rotate-file')
 
-let adminUrl = 'admin.nodedns'
+let settings
   , adUrls
   , whitelist
 
@@ -21,7 +22,7 @@ let adminUrl = 'admin.nodedns'
 
   , server = dns.createServer()
   , authority =
-  { address: '8.8.8.8'
+  { address: ''
   , port: 53
   , type: 'udp'
   }
@@ -57,7 +58,7 @@ app.post('/api/set', (req, res) => {
 
 app.all('*', (req, res) => {
   logger.info('Proxied request:', req.headers)
-  if (req.headers.host === adminUrl) {
+  if (req.headers.host === settings.adminUrl) {
     stats.get(logFile, (err, summary) => {
       if (err) {
         summary = stats.summaryDefault
@@ -65,10 +66,7 @@ app.all('*', (req, res) => {
         logger.error(err)
       }
       summary.adUrls = adUrls.length - 1
-      summary.settings = {
-        adminUrl: adminUrl
-      , dnsAuthority: dnsAuthority
-      }
+      summary.settings = settings
       console.log(summary)
       res.render('index', summary)
     })
@@ -139,8 +137,13 @@ fs.readFile('data/adDomains.list', function (err, data) {
     logger.error('Not blocking anything!')
     data = ''
   }
+
+  settings = config.load()
+  authority.address = settings.dnsAuthority
+
   adUrls = data.toString().split('\n')
-  adUrls.push(adminUrl)
+  adUrls.push(settings.adminUrl)
+
   logger.info(`Loaded ${adUrls.length - 1} ad domains.`)
   fs.readFile('data/whitelist.list', function (err, data) {
     if (err) {

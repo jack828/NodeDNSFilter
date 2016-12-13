@@ -7,5 +7,8 @@ data/adDomains.list
 data/blacklist.list
 data/whitelist.list
 
+# Settings
+data/config
+
 # Logs
 logs/log*
