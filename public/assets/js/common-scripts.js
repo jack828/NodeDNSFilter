@@ -121,7 +121,13 @@ $(document).on('ready', function () {
       }
     , success: function () {
         $('.js-config-general--success').removeClass('hidden')
-        setTimeout(function () { window.location.host = adminUrl }, 3000)
+        setTimeout(function () {
+          if (window.location.host !== adminUrl) {
+            window.location.host = adminUrl
+          } else {
+            window.location.reload(true)
+          }
+        }, 3000)
       }
     , error: function (jqXHR) {
         var $errorPanel = $('.js-config-general--error')
