@@ -110,15 +110,24 @@ $(document).on('ready', function () {
 
   $('.js-config-general--save').on('click', function (e) {
     e.preventDefault()
+    var adminUrl = $('.js-config-general--adminUrl').val()
+      , dnsAuthority = $('.js-config-general--dnsAuthority').val()
     $.ajax({
       url: '/api/set'
     , method: 'POST'
     , data:
-      { adminUrl: $('.js-config-general--adminUrl').val()
-      , dnsAuthority: $('.js-config-general--dnsAuthority').val()
+      { adminUrl: adminUrl
+      , dnsAuthority: dnsAuthority
       }
-    , success: function () {}
-    , error: function () {}
+    , success: function () {
+        $('.js-config-general--success').removeClass('hidden')
+        setTimeout(function () { window.location.host = adminUrl }, 3000)
+      }
+    , error: function (jqXHR) {
+        var $errorPanel = $('.js-config-general--error')
+        $errorPanel.find('p').text(jqXHR.responseText)
+        $errorPanel.removeClass('hidden')
+      }
     })
   })
 })

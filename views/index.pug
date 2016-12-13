@@ -185,6 +185,12 @@ html(lang='en')
         section.wrapper.js-config-general.hidden
           .row.text-center
             h1 General Config
+            .row.mtbox.hidden.js-config-general--error
+              .col-xs-12.box0
+                .box1
+                  span.fa.fa-warning
+                  h3 Woah there cowperson! There's been an error.
+                p
             .row.mt
               .col-xs-12
                 .form-panel
@@ -200,7 +206,12 @@ html(lang='en')
                         input.form-control.js-config-general--dnsAuthority(type='text', value=settings.dnsAuthority, required)
                         span.help-block This is DNS authority requests are forwarded to.
                     .form-group
-                      .col-xs-12.text-right
+                      .col-xs-6.text-center
+                        h4.hidden.js-config-general--success
+                          |Your changes have been saved.
+                          br
+                          |If you've changed the admin URL, you will be redirected there.
+                      .col-xs-6.text-right
                         button.btn.btn-lg.btn-default.js-config-general--save(type='submit', disabled) SAVE CHANGES
 
         section.wrapper.js-config-whitelist.hidden

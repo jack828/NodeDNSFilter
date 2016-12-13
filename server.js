@@ -61,7 +61,11 @@ app.post('/api/set', (req, res) => {
     config.set('dnsAuthority', req.body.dnsAuthority)
   }
   config.save((err) => {
-    if (err) return res.send(500).json(err)
+    if (err) {
+      logger.error('Error saving', err)
+      return res.status(500).send(err)
+    }
+    logger.warn('Changed config', config.get())
     res.sendStatus(200)
   })
 
