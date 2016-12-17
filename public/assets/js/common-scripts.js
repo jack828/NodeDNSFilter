@@ -137,6 +137,51 @@ $(document).on('ready', function () {
     })
   })
 
+  // White/black list buttons
+  $('.js-config-whitelist--submit').on('click', function (e) {
+    e.preventDefault()
+    var $formGroup = $(this).parent().parent()
+      , url = $formGroup.find('.js-config-whitelist--url').val()
+      , validator = validateUrl(url)
+      , hostname = getHostname(url)
+
+    if (validator) {
+      $.ajax({
+        url: '/api/set/whitelist'
+      , method: 'POST'
+      , data: { url: hostname }
+      , success: function () {
+          // window.location.reload()
+        }
+      , error: function (jqXHR) {
+          var $errorPanel = $('.js-config-whitelist--error')
+          $errorPanel.find('p').text(jqXHR.responseText)
+          $errorPanel.removeClass('hidden')
+        }
+      })
+    } else {
+    }
+  })
+
+  function validateUrl (url) {
+    var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+    '(([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}', 'i') // fragment locater
+    if (!pattern.test(url)) {
+      return false
+    } else {
+      return true
+    }
+  }
+
+  function getHostname (url) {
+    if (!/^https?:\/\//.exec(url)) {
+      url = 'http://' + url
+    }
+    var parser = document.createElement('a')
+    parser.href = url
+    return parser.hostname
+  }
+
   // Load the lists after page load
   $.ajax({
     url: '/api/get/whitelist'
