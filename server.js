@@ -104,6 +104,22 @@ app.post('/api/set/:listname', (req, res) => {
   }
 })
 
+app.delete('/api/delete/:listname/:url', (req, res) => {
+  let allowedLists = [ 'whitelist', 'blacklist' ]
+  if (allowedLists.indexOf(req.params.listname) !== -1) {
+    config.deleteFromList(req.params.listname, req.params.url, (err) => {
+      if (err) {
+        logger.error('Error deleting url from list', err, req.params)
+        return res.status(500).send(err)
+      }
+      logger.info('deleted', req.params)
+      res.sendStatus(200)
+    })
+  } else {
+    res.sendStatus(400)
+  }
+})
+
 app.all('*', (req, res) => {
   logger.info('Proxied request:', req.headers)
   if (req.headers.host === config.get('adminUrl')) {

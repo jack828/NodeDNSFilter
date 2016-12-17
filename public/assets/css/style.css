@@ -2244,3 +2244,7 @@ label {
 .stats-table tbody tr > td:first-child {
   word-break: break-word;
 }
+
+.list-table tbody > tr > td:first-child {
+  width: 10%;
+}

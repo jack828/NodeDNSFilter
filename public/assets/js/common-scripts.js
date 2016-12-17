@@ -193,6 +193,7 @@ $(document).on('ready', function () {
         row += '<td>' + url + '</td></tr>'
         $('.js-config-whitelist--table').append(row)
       })
+      $('.js-whitelist--remove-url').on('click', removeUrl)
   }
   , error: function (jqXHR) {
       var $errorPanel = $('.js-config-whitelist--error')
@@ -200,4 +201,23 @@ $(document).on('ready', function () {
       $errorPanel.removeClass('hidden')
     }
   })
+
+  function removeUrl () {
+    var $tableRow = $(this).parent()
+      , urlCell = $tableRow.children()[1]
+      , url = $(urlCell).text()
+
+    $.ajax({
+      url: '/api/delete/whitelist/' + encodeURIComponent(url)
+    , method: 'DELETE'
+    , success: function () {
+        $tableRow.remove()
+      }
+    , error: function (jqXHR) {
+        var $errorPanel = $('.js-config-whitelist--error')
+        $errorPanel.find('p').text(jqXHR.responseText)
+        $errorPanel.removeClass('hidden')
+      }
+    })
+  }
 })
