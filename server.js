@@ -88,35 +88,25 @@ app.get('/api/get/:listname', (req, res) => {
 })
 
 app.put('/api/set/:listname/:url', (req, res) => {
-  let allowedLists = [ 'whitelist', 'blacklist' ]
-  if (allowedLists.indexOf(req.params.listname) !== -1) {
-    config.saveToList(req.params.listname, req.params.url, (err) => {
-      if (err) {
-        logger.error('Error saving url to list', err, req.params)
-        return res.status(500).send(err)
-      }
-      logger.info('saved', req.params)
-      res.sendStatus(200)
-    })
-  } else {
-    res.sendStatus(400)
-  }
+  config.saveToList(req.params.listname, req.params.url, (err) => {
+    if (err) {
+      logger.error('Error saving url to list', err, req.params)
+      return res.status(500).send(err)
+    }
+    logger.info('saved', req.params)
+    res.sendStatus(200)
+  })
 })
 
 app.delete('/api/delete/:listname/:url', (req, res) => {
-  let allowedLists = [ 'whitelist', 'blacklist' ]
-  if (allowedLists.indexOf(req.params.listname) !== -1) {
-    config.deleteFromList(req.params.listname, req.params.url, (err) => {
-      if (err) {
-        logger.error('Error deleting url from list', err, req.params)
-        return res.status(500).send(err)
-      }
-      logger.info('deleted', req.params)
-      res.sendStatus(200)
-    })
-  } else {
-    res.sendStatus(400)
-  }
+  config.deleteFromList(req.params.listname, req.params.url, (err) => {
+    if (err) {
+      logger.error('Error deleting url from list', err, req.params)
+      return res.status(500).send(err)
+    }
+    logger.info('deleted', req.params)
+    res.sendStatus(200)
+  })
 })
 
 app.all('*', (req, res) => {
