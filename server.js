@@ -156,7 +156,7 @@ function proxy (question, response, cb) {
 
   // when we get answers, append them to the response
   request.on('message', (err, msg) => {
-    msg.answer.forEach(a => response.answer.push(a))
+    msg.answer.forEach((answer) => response.answer.push(answer))
   })
 
   request.on('end', cb)
@@ -168,10 +168,10 @@ function handleRequest (request, response) {
 
   let f = []
 
-  request.question.forEach(question => {
+  request.question.forEach((question) => {
     let whitelisted = whitelist.indexOf(question.name.toLowerCase()) !== -1
     if (whitelisted) {
-      f.push(cb => proxy(question, response, cb))
+      f.push((cb) => proxy(question, response, cb))
       return
     }
     let blacklisted = adUrls.indexOf(question.name.toLowerCase()) !== -1
@@ -186,7 +186,7 @@ function handleRequest (request, response) {
       }
       response.answer.push(record)
     } else {
-      f.push(cb => proxy(question, response, cb))
+      f.push((cb) => proxy(question, response, cb))
     }
   })
 
@@ -199,7 +199,7 @@ server.on('close', () => logger.warn('server closed', server.address()))
 server.on('error', (err, buff, req, res) => logger.error(err.stack))
 server.on('socketError', (err, socket) => logger.error(err))
 
-fs.readFile('data/adDomains.list', function (err, data) {
+fs.readFile('data/adDomains.list', (err, data) => {
   if (err) {
     logger.error('Couldn\'t load adDomains.list, err:', err)
     logger.error('Not blocking anything!')
@@ -213,7 +213,7 @@ fs.readFile('data/adDomains.list', function (err, data) {
   adUrls.push(config.get('adminUrl'))
 
   logger.info(`Loaded ${adUrls.length - 1} ad domains.`)
-  fs.readFile('data/whitelist.list', function (err, data) {
+  fs.readFile('data/whitelist.list', (err, data) => {
     if (err) {
       logger.error('Couldn\'t load whitelist.list, err:', err)
       data = ''

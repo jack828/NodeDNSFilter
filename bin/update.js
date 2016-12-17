@@ -7,7 +7,7 @@ const request = require('request')
 
 let unique = (arr) => [...new Set(arr)]
 
-fs.readFile(adSourceUrlsFile, function (err, data) {
+fs.readFile(adSourceUrlsFile, (err, data) => {
   if (err) {
     console.error('Couldn\'t read `adUrls.list`, aborting:', err)
     return
@@ -20,7 +20,7 @@ fs.readFile(adSourceUrlsFile, function (err, data) {
 
   console.log(`Read ${adSourceUrlsFile}, fetching ad lists from ${urls.length} sources...`)
 
-  async.map(urls, request, function (err, results) {
+  async.map(urls, request, (err, results) => {
     if (err) {
       console.error('Couldn\'t fetch ad list, aborting:', err)
       return
@@ -64,7 +64,7 @@ function filter (type, domains) {
        - May have comments
     */
     domains = filterComments(domains.split('\n'))
-    filteredDomains = domains.map(line => line.split(/\s+/)[1])
+    filteredDomains = domains.map((line) => line.split(/\s+/)[1])
   } else if (type === 'inline') {
     /*
       Domains are in the format:
@@ -74,18 +74,18 @@ function filter (type, domains) {
     */
     domains = filterComments(domains.split('\n'))
     // Split and trim the comment and whitespace after domain
-    filteredDomains = domains.map(line => line.split(/\s*#+/)[0])
+    filteredDomains = domains.map((line) => line.split(/\s*#+/)[0])
   }
   return filteredDomains
 }
 
 function filterComments (data) {
-  return data.filter(line => line !== '' && line.slice(0, 1) !== '#')
+  return data.filter((line) => line !== '' && line.slice(0, 1) !== '#')
 }
 
 function writeAdList (adDomainsList, blacklist) {
   // Delete existing list
-  fs.unlink(adDomainsFile, function (err) {
+  fs.unlink(adDomainsFile, (err) => {
     if (err) {
       console.log(`Couldn't delete ${adDomainsFile}, maybe it doesn't exist already?`)
     } else {
@@ -94,7 +94,7 @@ function writeAdList (adDomainsList, blacklist) {
 
     adDomainsList = adDomainsList.concat(blacklist)
     adDomainsList = unique(adDomainsList)
-    fs.writeFile(adDomainsFile, adDomainsList.join('\n'), function (err) {
+    fs.writeFile(adDomainsFile, adDomainsList.join('\n'), (err) => {
       if (err) {
         console.error(`Couldn't write to ${adDomainsFile}, aborting: ${err}`)
         return
@@ -105,7 +105,7 @@ function writeAdList (adDomainsList, blacklist) {
 }
 
 function readUserBlacklist (callback) {
-  fs.readFile(blacklistFile, function (err, data) {
+  fs.readFile(blacklistFile, (err, data) => {
     if (err) return callback(err)
     callback(null, data.toString())
   })
