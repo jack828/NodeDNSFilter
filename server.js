@@ -87,16 +87,15 @@ app.get('/api/get/:listname', (req, res) => {
   }
 })
 
-app.post('/api/set/:listname', (req, res) => {
+app.put('/api/set/:listname/:url', (req, res) => {
   let allowedLists = [ 'whitelist', 'blacklist' ]
   if (allowedLists.indexOf(req.params.listname) !== -1) {
-    fs.appendFile(`data/${req.params.listname}.list`
-    , '\n' + req.body.url
-    , (err) => {
+    config.saveToList(req.params.listname, req.params.url, (err) => {
       if (err) {
-        logger.error('Error appending list', err, req.params.listname)
+        logger.error('Error saving url to list', err, req.params)
         return res.status(500).send(err)
       }
+      logger.info('saved', req.params)
       res.sendStatus(200)
     })
   } else {

@@ -147,9 +147,8 @@ $(document).on('ready', function () {
 
     if (validator) {
       $.ajax({
-        url: '/api/set/whitelist'
-      , method: 'POST'
-      , data: { url: hostname }
+        url: '/api/set/whitelist/' + encodeURIComponent(url)
+      , method: 'PUT'
       , success: function () {
           // window.location.reload()
         }
