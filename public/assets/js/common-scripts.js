@@ -136,4 +136,23 @@ $(document).on('ready', function () {
       }
     })
   })
+
+  // Load the lists after page load
+  $.ajax({
+    url: '/api/get/whitelist'
+  , method: 'GET'
+  , success: function (body) {
+      var urls = body.split('\n')
+      urls.forEach(function (url) {
+        var row = '<tr>' + '<td class="js-whitelist--remove-url"><i class="fa fa-remove"></i></td>'
+        row += '<td>' + url + '</td></tr>'
+        $('.js-config-whitelist--table').append(row)
+      })
+  }
+  , error: function (jqXHR) {
+      var $errorPanel = $('.js-config-whitelist--error')
+      $errorPanel.find('p').text(jqXHR.responseText)
+      $errorPanel.removeClass('hidden')
+    }
+  })
 })

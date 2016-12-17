@@ -71,6 +71,39 @@ app.post('/api/set', (req, res) => {
 
 })
 
+app.get('/api/get/:listname', (req, res) => {
+  let allowedLists = [ 'whitelist', 'blacklist' ]
+  if (allowedLists.indexOf(req.params.listname) !== -1) {
+    fs.readFile(`data/${req.params.listname}.list`, (err, data) => {
+      if (err) {
+        logger.error('Error loading list', err, req.params.listname)
+        return res.status(500).send(err)
+      }
+      let urls = data.toString()
+      res.send(urls)
+    })
+  } else {
+    res.sendStatus(400)
+  }
+})
+
+app.post('/api/set/:listname', (req, res) => {
+  let allowedLists = [ 'whitelist', 'blacklist' ]
+  if (allowedLists.indexOf(req.params.listname) !== -1) {
+    fs.appendFile(`data/${req.params.listname}.list`
+    , '\n' + req.body.url
+    , (err) => {
+      if (err) {
+        logger.error('Error appending list', err, req.params.listname)
+        return res.status(500).send(err)
+      }
+      res.sendStatus(200)
+    })
+  } else {
+    res.sendStatus(400)
+  }
+})
+
 app.all('*', (req, res) => {
   logger.info('Proxied request:', req.headers)
   if (req.headers.host === config.get('adminUrl')) {

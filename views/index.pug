@@ -217,6 +217,29 @@ html(lang='en')
         section.wrapper.js-config-whitelist.hidden
           .row.text-center
             h1 Whitelist
+            .row.mtbox.hidden.js-config-whitelist--error
+              .col-xs-12.box0
+                .box1
+                  span.fa.fa-warning
+                  h3 Woah there cowperson! There's been an error.
+                p
+            .row.mt
+              .col-xs-12
+                .form-panel
+                  form.form-horizontal.style-form.js-config-general--form
+                    .form-group
+                      label.col-sm-2.control-label Whitelist URL
+                      .col-sm-8
+                        input.form-control.js-config-whitelist--url(type='text' required)
+                      .col-sm-2
+                        button.btn.btn-theme.js-config-whitelist--submit(type='submit') Whitelist
+                .white-panel.pn
+                  .white-header
+                    h5 CURRENTLY WHITELISTED
+                  .row
+                    .col-xs-12
+                      table.table.table-striped.stats-table.list-table
+                        tbody.text-center.js-config-whitelist--table
 
         section.wrapper.js-config-blacklist.hidden
           .row.text-center
