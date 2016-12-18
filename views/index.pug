@@ -290,6 +290,7 @@ html(lang='en')
     script.
       $(document).on('ready', function () {
         $('.js-sidebar-toggle').trigger('click')
+        $(window).trigger('hashchange')
       })
 
       window.onhashchange = function () {
