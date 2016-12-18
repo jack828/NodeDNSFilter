@@ -129,11 +129,7 @@ $(document).on('ready', function () {
           }
         }, 3000)
       }
-    , error: function (jqXHR) {
-        var $errorPanel = $('.js-config-general--error')
-        $errorPanel.find('p').text(jqXHR.responseText)
-        $errorPanel.removeClass('hidden')
-      }
+    , error: createErrorHandler('general')
     })
   })
 
@@ -152,11 +148,7 @@ $(document).on('ready', function () {
       , success: function () {
           window.location.reload()
         }
-      , error: function (jqXHR) {
-          var $errorPanel = $('.js-config-whitelist--error')
-          $errorPanel.find('p').text(jqXHR.responseText)
-          $errorPanel.removeClass('hidden')
-        }
+      , error: createErrorHandler('whitelist')
       })
     } else {
     }
@@ -177,11 +169,7 @@ $(document).on('ready', function () {
       , success: function () {
           window.location.reload()
         }
-      , error: function (jqXHR) {
-          var $errorPanel = $('.js-config-blacklist--error')
-          $errorPanel.find('p').text(jqXHR.responseText)
-          $errorPanel.removeClass('hidden')
-        }
+      , error: createErrorHandler('blacklist')
       })
     } else {
     }
@@ -220,11 +208,7 @@ $(document).on('ready', function () {
       })
       $('.js-whitelist--remove-url').on('click', removeUrl)
   }
-  , error: function (jqXHR) {
-      var $errorPanel = $('.js-config-whitelist--error')
-      $errorPanel.find('p').text(jqXHR.responseText)
-      $errorPanel.removeClass('hidden')
-    }
+  , error: createErrorHandler('whitelist')
   })
 
   $.ajax({
@@ -240,11 +224,7 @@ $(document).on('ready', function () {
       })
       $('.js-blacklist--remove-url').on('click', removeUrl)
   }
-  , error: function (jqXHR) {
-      var $errorPanel = $('.js-config-blacklist--error')
-      $errorPanel.find('p').text(jqXHR.responseText)
-      $errorPanel.removeClass('hidden')
-    }
+  , error: createErrorHandler(listname)
   })
 
   function removeUrl () {
@@ -259,11 +239,15 @@ $(document).on('ready', function () {
     , success: function () {
         $tableRow.remove()
       }
-    , error: function (jqXHR) {
-        var $errorPanel = $('.js-config-' + listname + '--error')
-        $errorPanel.find('p').text(jqXHR.responseText)
-        $errorPanel.removeClass('hidden')
-      }
+    , error: createErrorHandler(listname)
     })
+  }
+
+  function createErrorHandler (location) {
+    return function (jqXHR) {
+      var $errorPanel = $('.js-config-' + location + '--error')
+      $errorPanel.find('p').text(jqXHR.responseText)
+      $errorPanel.removeClass('hidden')
+    }
   }
 })
