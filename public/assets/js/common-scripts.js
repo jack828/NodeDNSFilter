@@ -10,9 +10,7 @@ $(document).on('ready', function () {
     , autoExpand: true
     , classExpand: 'dcjq-current-parent'
   })
-})
 
-$(document).on('ready', function () {
   // sidebar dropdown menu auto scrolling
 
   $('#sidebar .sub-menu > a').click(function () {
