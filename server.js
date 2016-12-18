@@ -16,6 +16,7 @@ require('winston-daily-rotate-file')
 
 let adUrls
   , whitelist
+  , blacklist
 
   , app = express()
 
@@ -159,13 +160,12 @@ function handleRequest (request, response) {
   let f = []
 
   request.question.forEach((question) => {
-    let whitelisted = whitelist.indexOf(question.name.toLowerCase()) !== -1
-    if (whitelisted) {
+    if (question.name.toLowerCase() in whitelist) {
       f.push((cb) => proxy(question, response, cb))
       return
     }
-    let blacklisted = adUrls.indexOf(question.name.toLowerCase()) !== -1
-    if (blacklisted) {
+
+    if (question.name.toLowerCase() in blacklist) {
       logger.info('caught', { destination: question.name })
       let record = {
         type: 1
@@ -189,28 +189,8 @@ server.on('close', () => logger.warn('server closed', server.address()))
 server.on('error', (err, buff, req, res) => logger.error(err.stack))
 server.on('socketError', (err, socket) => logger.error(err))
 
-fs.readFile('data/adDomains.list', (err, data) => {
-  if (err) {
-    logger.error('Couldn\'t load adDomains.list, err:', err)
-    logger.error('Not blocking anything!')
-    data = ''
-  }
-
-  config.load()
-  authority.address = config.get('dnsAuthority')
-
-  adUrls = data.toString().split('\n')
-  adUrls.push(config.get('adminUrl'))
-
-  logger.info(`Loaded ${adUrls.length - 1} ad domains.`)
-  fs.readFile('data/whitelist.list', (err, data) => {
-    if (err) {
-      logger.error('Couldn\'t load whitelist.list, err:', err)
-      data = ''
-    }
-    whitelist = data.toString().split('\n')
-    logger.info(`Whitelisted ${whitelist.length} domains.`)
-
-    server.serve(53)
-  })
-})
+config.load(logger)
+authority.address = config.get('dnsAuthority')
+whitelist = config.getList('whitelist')
+blacklist = config.getList('blacklist')
+server.serve(53)
