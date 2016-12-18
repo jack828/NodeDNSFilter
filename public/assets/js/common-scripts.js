@@ -224,7 +224,7 @@ $(document).on('ready', function () {
       })
       $('.js-blacklist--remove-url').on('click', removeUrl)
   }
-  , error: createErrorHandler(listname)
+  , error: createErrorHandler('blacklist')
   })
 
   function removeUrl () {
