@@ -15,8 +15,9 @@ const dns = require('native-dns')
 require('winston-daily-rotate-file')
 
 let adUrls
-  , whitelist
-  , blacklist
+  , lists =
+  { whitelist: { }
+  , blacklist: { } }
 
   , app = express()
 
@@ -95,6 +96,7 @@ app.put('/api/set/:listname/:url', (req, res) => {
       return res.status(500).send(err)
     }
     logger.info('saved', req.params)
+    lists = config.getList()
     res.sendStatus(200)
   })
 })
@@ -106,6 +108,7 @@ app.delete('/api/delete/:listname/:url', (req, res) => {
       return res.status(500).send(err)
     }
     logger.info('deleted', req.params)
+    lists = config.getList()
     res.sendStatus(200)
   })
 })
@@ -119,7 +122,7 @@ app.all('*', (req, res) => {
         data.error = err
         logger.error(err)
       }
-      data.adUrls = adUrls.length - 1
+      data.adUrls = Object.keys(config.getList('blacklist')).length - 1
       data.settings = config.get()
       console.log(data)
       res.render('index', data)
@@ -160,12 +163,12 @@ function handleRequest (request, response) {
   let f = []
 
   request.question.forEach((question) => {
-    if (question.name.toLowerCase() in whitelist) {
+    if (question.name.toLowerCase() in lists.whitelist) {
       f.push((cb) => proxy(question, response, cb))
       return
     }
 
-    if (question.name.toLowerCase() in blacklist) {
+    if (question.name.toLowerCase() in lists.blacklist) {
       logger.info('caught', { destination: question.name })
       let record = {
         type: 1
@@ -191,6 +194,5 @@ server.on('socketError', (err, socket) => logger.error(err))
 
 config.load(logger)
 authority.address = config.get('dnsAuthority')
-whitelist = config.getList('whitelist')
-blacklist = config.getList('blacklist')
+lists = config.getList()
 server.serve(53)
