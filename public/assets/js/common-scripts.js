@@ -150,10 +150,35 @@ $(document).on('ready', function () {
         url: '/api/set/whitelist/' + encodeURIComponent(url)
       , method: 'PUT'
       , success: function () {
-          // window.location.reload()
+          window.location.reload()
         }
       , error: function (jqXHR) {
           var $errorPanel = $('.js-config-whitelist--error')
+          $errorPanel.find('p').text(jqXHR.responseText)
+          $errorPanel.removeClass('hidden')
+        }
+      })
+    } else {
+    }
+  })
+
+  $('.js-config-blacklist--submit').on('click', function (e) {
+    e.preventDefault()
+    var $formGroup = $(this).parent().parent()
+      , url = $formGroup.find('.js-config-blacklist--url').val()
+      , validator = validateUrl(url)
+      , hostname = getHostname(url)
+
+    console.log('validator', validator, hostname)
+    if (validator) {
+      $.ajax({
+        url: '/api/set/blacklist/' + encodeURIComponent(url)
+      , method: 'PUT'
+      , success: function () {
+          window.location.reload()
+        }
+      , error: function (jqXHR) {
+          var $errorPanel = $('.js-config-blacklist--error')
           $errorPanel.find('p').text(jqXHR.responseText)
           $errorPanel.removeClass('hidden')
         }
@@ -188,7 +213,8 @@ $(document).on('ready', function () {
   , success: function (body) {
       var urls = body.split('\n')
       urls.forEach(function (url) {
-        var row = '<tr>' + '<td class="js-whitelist--remove-url"><i class="fa fa-remove"></i></td>'
+        var row = '<tr data-listname="whitelist">'
+        row += '<td class="js-whitelist--remove-url"><i class="fa fa-remove"></i></td>'
         row += '<td>' + url + '</td></tr>'
         $('.js-config-whitelist--table').append(row)
       })
@@ -201,13 +227,34 @@ $(document).on('ready', function () {
     }
   })
 
+  $.ajax({
+    url: '/api/get/blacklist'
+  , method: 'GET'
+  , success: function (body) {
+      var urls = body.split('\n')
+      urls.forEach(function (url) {
+        var row = '<tr data-listname="blacklist">'
+        row += '<td class="js-blacklist--remove-url"><i class="fa fa-remove"></i></td>'
+        row += '<td>' + url + '</td></tr>'
+        $('.js-config-blacklist--table').append(row)
+      })
+      $('.js-blacklist--remove-url').on('click', removeUrl)
+  }
+  , error: function (jqXHR) {
+      var $errorPanel = $('.js-config-blacklist--error')
+      $errorPanel.find('p').text(jqXHR.responseText)
+      $errorPanel.removeClass('hidden')
+    }
+  })
+
   function removeUrl () {
     var $tableRow = $(this).parent()
+      , listname = $tableRow.data('listname')
       , urlCell = $tableRow.children()[1]
       , url = $(urlCell).text()
 
     $.ajax({
-      url: '/api/delete/whitelist/' + encodeURIComponent(url)
+      url: '/api/delete/' + listname + '/' + encodeURIComponent(url)
     , method: 'DELETE'
     , success: function () {
         $tableRow.remove()

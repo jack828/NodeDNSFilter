@@ -244,6 +244,30 @@ html(lang='en')
         section.wrapper.js-config-blacklist.hidden
           .row.text-center
             h1 Blacklist
+            .row.mtbox.hidden.js-config-blacklist--error
+              .col-xs-12.box0
+                .box1
+                  span.fa.fa-warning
+                  h3 Woah there cowperson! There's been an error.
+                p
+            .row.mt
+              .col-xs-12
+                .form-panel
+                  form.form-horizontal.style-form.js-config-general--form
+                    .form-group
+                      label.col-sm-2.control-label Blacklist URL
+                      .col-sm-8
+                        input.form-control.js-config-blacklist--url(type='text' required)
+                      .col-sm-2
+                        button.btn.btn-theme.js-config-blacklist--submit(type='submit') Blacklist
+                .white-panel.pn
+                  .white-header
+                    h5 CURRENTLY BLACKLISTED
+                  .row
+                    .col-xs-12
+                      table.table.table-striped.stats-table.list-table
+                        tbody.text-center.js-config-blacklist--table
+
       // main content end
       // footer start
       footer.site-footer
