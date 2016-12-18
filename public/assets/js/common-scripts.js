@@ -260,7 +260,7 @@ $(document).on('ready', function () {
         $tableRow.remove()
       }
     , error: function (jqXHR) {
-        var $errorPanel = $('.js-config-whitelist--error')
+        var $errorPanel = $('.js-config-' + listname + '--error')
         $errorPanel.find('p').text(jqXHR.responseText)
         $errorPanel.removeClass('hidden')
       }
