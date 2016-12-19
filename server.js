@@ -163,13 +163,10 @@ function handleRequest (request, response) {
   let f = []
 
   request.question.forEach((question) => {
-    if (question.name.toLowerCase() in lists.whitelist) {
-      f.push((cb) => proxy(question, response, cb))
-      return
-    }
+    let domain = question.name.toLowerCase()
 
-    if (question.name.toLowerCase() in lists.blacklist) {
-      logger.info('caught', { destination: question.name })
+    if (!(domain in lists.whitelist) && domain in lists.blacklist) {
+      logger.info('caught', { destination: domain })
       let record = {
         type: 1
       , class: 1
