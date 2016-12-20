@@ -14,8 +14,7 @@ const dns = require('native-dns')
 
 require('winston-daily-rotate-file')
 
-let adUrls
-  , lists =
+let lists =
   { whitelist: { }
   , blacklist: { } }
 
@@ -122,7 +121,7 @@ app.all('*', (req, res) => {
         data.error = err
         logger.error(err)
       }
-      data.adUrls = Object.keys(config.getList('blacklist')).length - 1
+      data.blockedUrls = Object.keys(config.getList('blacklist')).length - 1
       data.settings = config.get()
       console.log(data)
       res.render('index', data)
@@ -135,8 +134,7 @@ app.all('*', (req, res) => {
 app.listen(80)
 
 function loadAdminUrl (oldUrl, newUrl) {
-  let pos = adUrls.indexOf(oldUrl)
-  if (pos) adUrls[pos] = newUrl
+  delete
 }
 
 function proxy (question, response, cb) {
