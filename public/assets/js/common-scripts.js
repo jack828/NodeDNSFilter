@@ -13,7 +13,7 @@ $(document).on('ready', function () {
 
   // sidebar dropdown menu auto scrolling
 
-  $('#sidebar .sub-menu > a').click(function () {
+  $('#sidebar .sub-menu > a').on('click', function () {
     var o = ($(this).offset())
       , diff = 250 - o.top
     if (diff > 0) {
@@ -24,25 +24,22 @@ $(document).on('ready', function () {
   })
 
   // sidebar toggle
-
-  $(function () {
-    function responsiveView () {
-      var wSize = $(window).width()
-      if (wSize <= 768) {
-        $('#container').addClass('sidebar-close')
-        $('#sidebar > ul').hide()
-      }
-
-      if (wSize > 768) {
-        $('#container').removeClass('sidebar-close')
-        $('#sidebar > ul').show()
-      }
+  function responsiveView () {
+    var wSize = $(window).width()
+    if (wSize <= 768) {
+      $('#container').addClass('sidebar-close')
+      $('#sidebar > ul').hide()
     }
-    $(window).on('load', responsiveView)
-    $(window).on('resize', responsiveView)
-  })
 
-  $('.js-sidebar-toggle').click(function () {
+    if (wSize > 768) {
+      $('#container').removeClass('sidebar-close')
+      $('#sidebar > ul').show()
+    }
+  }
+  $(window).on('load', responsiveView)
+  $(window).on('resize', responsiveView)
+
+  $('.js-sidebar-toggle').on('click', function () {
     if ($('#sidebar > ul').is(':visible') === true) {
       $('#main-content').css({
         'margin-left': '0px'
@@ -64,39 +61,8 @@ $(document).on('ready', function () {
     }
   })
 
-  // widget tools
-  $('.panel .tools .fa-chevron-down').click(function () {
-    var el = $(this).parents('.panel').children('.panel-body')
-    if ($(this).hasClass('fa-chevron-down')) {
-      $(this).removeClass('fa-chevron-down').addClass('fa-chevron-up')
-      el.slideUp(200)
-    } else {
-      $(this).removeClass('fa-chevron-up').addClass('fa-chevron-down')
-      el.slideDown(200)
-    }
-  })
-
-  $('.panel .tools .fa-times').click(function () {
-    $(this).parents('.panel').parent().remove()
-  })
-
   // tool tips
   $('.tooltips').tooltip()
-
-  // popovers
-  $('.popovers').popover()
-
-  // custom bar chart
-
-  if ($('.custom-bar-chart')) {
-    $('.bar').each(function () {
-      var i = $(this).find('.value').html()
-      $(this).find('.value').html('')
-      $(this).find('.value').animate({
-        height: i
-      }, 2000)
-    })
-  }
 
   // Form buttons
   $('.js-config-general--form :input').one('input', function () {
