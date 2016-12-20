@@ -1,7 +1,7 @@
 node_modules
 
-# Blocked ad domains
-data/adDomains.list
+# Blocked domains
+data/domains.list
 
 # User's lists
 data/blacklist.list

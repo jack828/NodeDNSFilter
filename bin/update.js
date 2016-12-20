@@ -1,14 +1,14 @@
 const request = require('request')
     , fs = require('fs')
     , async = require('async')
-    , adSourceUrlsFile = 'data/adSourceUrls.list'
-    , adDomainsFile = 'data/adDomains.list'
+    , domainSourceFile = 'data/domain-sources.list'
+    , domainsFile = 'data/domains.list'
 
 let unique = (arr) => [...new Set(arr)]
 
-fs.readFile(adSourceUrlsFile, (err, data) => {
+fs.readFile(domainSourceFile, (err, data) => {
   if (err) {
-    console.error('Couldn\'t read `adUrls.list`, aborting:', err)
+    console.error(`Couldn\'t read ${domainSourceFile}, aborting:`, err)
     return
   }
   data = data.toString().split('\n')
@@ -17,11 +17,11 @@ fs.readFile(adSourceUrlsFile, (err, data) => {
   let types = data.map(line => line[0])
     , urls = data.map(line => line[1])
 
-  console.log(`Read ${adSourceUrlsFile}, fetching ad lists from ${urls.length} sources...`)
+  console.log(`Read ${domainSourceFile}, fetching domain lists from ${urls.length} sources...`)
 
   async.map(urls, request, (err, results) => {
     if (err) {
-      console.error('Couldn\'t fetch ad list, aborting:', err)
+      console.error('Couldn\'t fetch domain list, aborting:', err)
       return
     }
     console.log(`Fetched ${results.length} ad lists`)
@@ -36,7 +36,7 @@ fs.readFile(adSourceUrlsFile, (err, data) => {
     }
     console.log(`Total domains: ${domainList.length}`)
 
-    writeAdList(domainList)
+    writeDomainList(domainList)
   })
 })
 
@@ -77,22 +77,22 @@ function filterComments (data) {
   return data.filter((line) => line !== '' && line.slice(0, 1) !== '#')
 }
 
-function writeAdList (adDomainsList) {
+function writeDomainList (domainsList) {
   // Delete existing list
-  fs.unlink(adDomainsFile, (err) => {
+  fs.unlink(domainsFile, (err) => {
     if (err) {
-      console.log(`Couldn't delete ${adDomainsFile}, maybe it doesn't exist already?`)
+      console.log(`Couldn't delete ${domainsFile}, maybe it doesn't exist already?`)
     } else {
-      console.log(`Deleted ${adDomainsFile}`)
+      console.log(`Deleted ${domainsFile}`)
     }
 
-    adDomainsList = unique(adDomainsList).join('\n')
-    fs.writeFile(adDomainsFile, adDomainsList, (err) => {
+    domainsList = unique(domainsList).join('\n')
+    fs.writeFile(domainsFile, domainsList, (err) => {
       if (err) {
-        console.error(`Couldn't write to ${adDomainsFile}, aborting: ${err}`)
+        console.error(`Couldn't write to ${domainsFile}, aborting: ${err}`)
         return
       }
-      console.log(`Wrote ${adDomainsList.length} domains to`, adDomainsFile)
+      console.log(`Wrote ${domainsList.length} domains to`, domainsFile)
     })
   })
 }
