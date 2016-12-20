@@ -295,6 +295,8 @@ html(lang='en')
 
       window.onhashchange = function () {
         var hash = window.location.hash.replace('#', '')
-        $('section.wrapper').not('.hidden').addClass('hidden')
-        $('section.wrapper.js-' + hash).removeClass('hidden')
+        if (hash && $('section.wrapper.js-' + hash).length) {
+          $('section.wrapper').not('.hidden').addClass('hidden')
+          $('section.wrapper.js-' + hash).removeClass('hidden')
+        }
       }
