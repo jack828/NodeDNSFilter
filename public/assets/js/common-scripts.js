@@ -141,7 +141,7 @@ $(document).on('ready', function () {
 
     if (validator) {
       $.ajax({
-        url: '/api/set/whitelist/' + encodeURIComponent(url)
+        url: '/api/set/whitelist/' + encodeURIComponent(hostname)
       , method: 'PUT'
       , success: function () {
           window.location.reload()
@@ -159,10 +159,9 @@ $(document).on('ready', function () {
       , validator = validateUrl(url)
       , hostname = getHostname(url)
 
-    console.log('validator', validator, hostname)
     if (validator) {
       $.ajax({
-        url: '/api/set/blacklist/' + encodeURIComponent(url)
+        url: '/api/set/blacklist/' + encodeURIComponent(hostname)
       , method: 'PUT'
       , success: function () {
           window.location.reload()
