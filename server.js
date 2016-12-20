@@ -55,8 +55,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.post('/api/set', (req, res) => {
   if (req.body.adminUrl) {
-    loadAdminUrl(config.get('adminUrl'), req.body.adminUrl)
-    config.set('adminUrl', req.body.adminUrl)
+    config.setAdminUrl(req.body.adminUrl)
   }
   if (req.body.dnsAuthority) {
     config.set('dnsAuthority', req.body.dnsAuthority)
@@ -132,10 +131,6 @@ app.all('*', (req, res) => {
 })
 
 app.listen(80)
-
-function loadAdminUrl (oldUrl, newUrl) {
-  delete
-}
 
 function proxy (question, response, cb) {
   logger.info('proxying', { destination: question.name })
