@@ -2,7 +2,6 @@ const request = require('request')
     , fs = require('fs')
     , async = require('async')
     , adSourceUrlsFile = 'data/adSourceUrls.list'
-    , blacklistFile = 'data/blacklist.list'
     , adDomainsFile = 'data/adDomains.list'
 
 let unique = (arr) => [...new Set(arr)]
@@ -37,12 +36,7 @@ fs.readFile(adSourceUrlsFile, (err, data) => {
     }
     console.log(`Total domains: ${domainList.length}`)
 
-    readUserBlacklist((err, blacklist) => {
-      if (err) {
-        console.log(`Couldn't read user blacklist at ${blacklistFile}, err: ${err}`)
-      }
-      writeAdList(domainList, blacklist)
-    })
+    writeAdList(domainList)
   })
 })
 
@@ -83,7 +77,7 @@ function filterComments (data) {
   return data.filter((line) => line !== '' && line.slice(0, 1) !== '#')
 }
 
-function writeAdList (adDomainsList, blacklist) {
+function writeAdList (adDomainsList) {
   // Delete existing list
   fs.unlink(adDomainsFile, (err) => {
     if (err) {
@@ -92,21 +86,13 @@ function writeAdList (adDomainsList, blacklist) {
       console.log(`Deleted ${adDomainsFile}`)
     }
 
-    adDomainsList = adDomainsList.concat(blacklist)
-    adDomainsList = unique(adDomainsList)
-    fs.writeFile(adDomainsFile, adDomainsList.join('\n'), (err) => {
+    adDomainsList = unique(adDomainsList).join('\n')
+    fs.writeFile(adDomainsFile, adDomainsList, (err) => {
       if (err) {
         console.error(`Couldn't write to ${adDomainsFile}, aborting: ${err}`)
         return
       }
       console.log(`Wrote ${adDomainsList.length} domains to`, adDomainsFile)
     })
-  })
-}
-
-function readUserBlacklist (callback) {
-  fs.readFile(blacklistFile, (err, data) => {
-    if (err) return callback(err)
-    callback(null, data.toString())
   })
 }
