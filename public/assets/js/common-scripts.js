@@ -164,6 +164,7 @@ $(document).on('ready', function () {
   , success: function (body) {
       var urls = body.split('\n')
       urls.forEach(function (url) {
+        if (!url && url.length < 1) return
         var row = '<tr data-listname="whitelist">'
         row += '<td class="js-whitelist--remove-url"><i class="fa fa-remove"></i></td>'
         row += '<td>' + url + '</td></tr>'
@@ -180,6 +181,7 @@ $(document).on('ready', function () {
   , success: function (body) {
       var urls = body.split('\n')
       urls.forEach(function (url) {
+        if (!url && url.length < 1) return
         var row = '<tr data-listname="blacklist">'
         row += '<td class="js-blacklist--remove-url"><i class="fa fa-remove"></i></td>'
         row += '<td>' + url + '</td></tr>'
