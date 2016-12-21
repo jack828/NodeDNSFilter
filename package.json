@@ -1,8 +1,9 @@
 {
-  "name": "nodednsfilter",
+  "name": "node-dns-filter",
   "version": "0.0.0",
   "description": "A Node based DNS filter",
   "main": "server.js",
+  "bin" : { "node-dns" : "./server.js" },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "update": "node bin/update.js"
