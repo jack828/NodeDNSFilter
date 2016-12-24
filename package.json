@@ -13,7 +13,7 @@
     "url": "git+https://github.com/jack828/NodeDNSFilter.git"
   },
   "author": "Jack Burgess",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/jack828/NodeDNSFilter/issues"
   },

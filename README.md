@@ -50,6 +50,6 @@ Created by [Jack Burgess](https://github.com/jack828).
 
 ## License
 
-ISC
+MIT
 
 Please feel free to improve this, I'd really appreciate a pull request or two.
