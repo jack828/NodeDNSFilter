@@ -161,8 +161,9 @@ $(document).on('ready', function () {
   $.ajax({
     url: '/api/get/whitelist'
   , method: 'GET'
+  , json: true
   , success: function (body) {
-      var urls = body.split('\n')
+      var urls = Object.keys(body)
       urls.forEach(function (url) {
         if (!url && url.length < 1) return
         var row = '<tr data-listname="whitelist">'

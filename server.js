@@ -72,16 +72,9 @@ app.post('/api/set', (req, res) => {
 })
 
 app.get('/api/get/:listname', (req, res) => {
-  let allowedLists = [ 'whitelist', 'blacklist' ]
-  if (allowedLists.indexOf(req.params.listname) !== -1) {
-    fs.readFile(`data/${req.params.listname}.list`, (err, data) => {
-      if (err) {
-        logger.error('Error loading list', err, req.params.listname)
-        return res.status(500).send(err)
-      }
-      let urls = data.toString()
-      res.send(urls)
-    })
+  let listname = req.params.listname
+  if (config.validList(listname)) {
+    res.json(config.getList(listname))
   } else {
     res.sendStatus(400)
   }
