@@ -1,16 +1,18 @@
+#!/usr/bin/env node
 const dns = require('native-dns')
     , async = require('async')
     , express = require('express')
     , morgan = require('morgan')
     , bodyParser = require('body-parser')
     , winston = require('winston')
-    , fs = require('fs')
     , stats = require('./lib/stats')
     , ip = require('./lib/get-ip')
     , config = require('./lib/config')
     , env = process.env.NODE_ENV || 'development'
     , logLevel = env === 'development' ? 'debug' : 'info'
     , logFile = process.env.LOG_FILE || './logs/log'
+    , adminPort = process.env.PORT || 80
+    , dnsPort = process.env.DNS_PORT || 53
 
 require('winston-daily-rotate-file')
 
@@ -123,7 +125,7 @@ app.all('*', (req, res) => {
   }
 })
 
-app.listen(80)
+app.listen(adminPort)
 
 function proxy (question, response, cb) {
   logger.info('proxying', { destination: question.name })
@@ -178,4 +180,4 @@ server.on('socketError', (err, socket) => logger.error(err))
 config.load(logger)
 authority.address = config.get('dnsAuthority')
 lists = config.getList()
-server.serve(53)
+server.serve(dnsPort)

@@ -36,6 +36,17 @@ Now point your DNS settings to the IP address of whatever is running this progra
 
 Enjoy ad free browsing!!
 
+## Customisation
+
+You can change the following settings using environment variables:
+
+| Variable |    Default    |               Description                |
+|----------|---------------|------------------------------------------|
+| PORT     | 80            | The port the admin interface listens on. |
+| DNS_PORT | 53            | The port the DNS server listens on.      |
+| LOG_FILE | `./logs/log`  | The location logs are saved to.          |
+| NODE_ENV | `development` | The environment used.                    |
+
 ## Notes
 
 This doesn't hide the ad elements - so use this in conjunction with an ad blocking extension on desktop to hide them as well. When websites complain or otherwise prevent you from using their site, just disable the ad blocker extension and continue browsing ad-free.
