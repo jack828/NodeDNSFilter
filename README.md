@@ -47,6 +47,16 @@ You can change the following settings using environment variables:
 | LOG_FILE | `./logs/log`  | The location logs are saved to.          |
 | NODE_ENV | `development` | The environment used.                    |
 
+## Admin Interface
+
+Set the DNS server on whatever connection you're using to the IP address of the machine running it.
+
+Then, navigate to the following (customisable) address:
+
+```
+http://admin.nodedns/
+```
+
 ## Notes
 
 This doesn't hide the ad elements - so use this in conjunction with an ad blocking extension on desktop to hide them as well. When websites complain or otherwise prevent you from using their site, just disable the ad blocker extension and continue browsing ad-free.
