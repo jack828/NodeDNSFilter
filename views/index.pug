@@ -72,7 +72,7 @@ html(lang='en')
                 .box1
                   span.fa.fa-hand-stop-o
                   h3=caught.total
-                p Ads blocked today
+                p Domains blocked today
               .col-md-2.col-sm-2.box0
                 .box1
                   span.fa.fa-globe
@@ -83,7 +83,7 @@ html(lang='en')
                   span.fa.fa-pie-chart
                   - var percent = ((caught.total / incoming.total) * 100).toFixed(2) + '%'
                   h3=percent
-                p Of today's traffic is ads
+                p Of today's traffic was blocked
               .col-md-2.col-sm-2.box0
                 .box1
                   span.fa.fa-list
@@ -119,7 +119,7 @@ html(lang='en')
               .col-md-6.col-sm-6.mb
                 .white-panel.pn
                   .white-header
-                    h5 TOP CAUGHT ADS
+                    h5 TOP BLOCKED DOMAINS
                   .row
                     .col-xs-12
                       table.table.table-striped.stats-table
@@ -180,7 +180,7 @@ html(lang='en')
                         |&nbsp;All Requests
                       h5
                         i.fa.fa-square(style='color: #97200F;')
-                        |&nbsp;Requests Caught
+                        |&nbsp;Requests Blocked
 
         section.wrapper.js-config-general.hidden
           .row.text-center
