@@ -108,6 +108,9 @@ app.delete('/api/delete/:listname/:url', (req, res) => {
 
 app.all('*', (req, res) => {
   logger.info('Proxied request:', req.headers)
+  logger.info('req.headers.host', req.headers && req.headers.host)
+  logger.info('config.adminUrl', config.get('adminUrl'))
+
   if (req.headers.host === config.get('adminUrl')) {
     stats.get(logFile, (err, data) => {
       if (err) {
@@ -124,8 +127,6 @@ app.all('*', (req, res) => {
     res.status(404).end()
   }
 })
-
-app.listen(adminPort)
 
 function proxy (question, response, cb) {
   logger.info('proxying', { destination: question.name })
@@ -181,3 +182,7 @@ config.load(logger)
 authority.address = config.get('dnsAuthority')
 lists = config.getList()
 server.serve(dnsPort)
+
+app.listen(adminPort, () => {
+  logger.info(`Admin listening on port ${adminPort}`)
+})
