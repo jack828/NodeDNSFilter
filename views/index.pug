@@ -185,12 +185,13 @@ html(lang='en')
         section.wrapper.js-config-general.hidden
           .row.text-center
             h1 General Config
-            .row.mtbox.hidden.js-config-general--error
-              .col-xs-12.box0
-                .box1
-                  span.fa.fa-warning
-                  h3 Woah there cowperson! There's been an error.
-                p
+              if error
+                .row.mtbox.hidden.js-config-general--error
+                  .col-xs-12.box0
+                    .box1
+                      span.fa.fa-warning
+                      h3 Woah there cowperson! There's been an error.
+                    p=error
             .row.mt
               .col-xs-12
                 .form-panel
@@ -217,12 +218,13 @@ html(lang='en')
         section.wrapper.js-config-whitelist.hidden
           .row.text-center
             h1 Whitelist
-            .row.mtbox.hidden.js-config-whitelist--error
-              .col-xs-12.box0
-                .box1
-                  span.fa.fa-warning
-                  h3 Woah there cowperson! There's been an error.
-                p
+            if error
+              .row.mtbox.hidden.js-config-whitelist--error
+                .col-xs-12.box0
+                  .box1
+                    span.fa.fa-warning
+                    h3 Woah there cowperson! There's been an error.
+                  p=error
             .row.mt
               .col-xs-12
                 .form-panel
@@ -244,12 +246,13 @@ html(lang='en')
         section.wrapper.js-config-blacklist.hidden
           .row.text-center
             h1 Blacklist
-            .row.mtbox.hidden.js-config-blacklist--error
-              .col-xs-12.box0
-                .box1
-                  span.fa.fa-warning
-                  h3 Woah there cowperson! There's been an error.
-                p
+            if error
+              .row.mtbox.hidden.js-config-blacklist--error
+                .col-xs-12.box0
+                  .box1
+                    span.fa.fa-warning
+                    h3 Woah there cowperson! There's been an error.
+                  p=error
             .row.mt
               .col-xs-12
                 .form-panel
