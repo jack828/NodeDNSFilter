@@ -2,6 +2,8 @@
 const dns = require('native-dns')
     , async = require('async')
     , express = require('express')
+    , http = require('http')
+    , https = require('https')
     , morgan = require('morgan')
     , bodyParser = require('body-parser')
     , winston = require('winston')
@@ -11,7 +13,6 @@ const dns = require('native-dns')
     , env = process.env.NODE_ENV || 'development'
     , logLevel = env === 'development' ? 'debug' : 'info'
     , logFile = process.env.LOG_FILE || './logs/log'
-    , adminPort = process.env.PORT || 80
     , dnsPort = process.env.DNS_PORT || 53
 
 require('winston-daily-rotate-file')
@@ -45,6 +46,7 @@ let lists =
       })
     ]
   })
+  , httpsOptions
 
 if (env === 'production') {
   logger.remove(winston.transports.Console)
@@ -181,8 +183,14 @@ server.on('socketError', (err, socket) => logger.error(err))
 config.load(logger)
 authority.address = config.get('dnsAuthority')
 lists = config.getList()
+httpsOptions = config.getSSL()
+
 server.serve(dnsPort)
 
-app.listen(adminPort, () => {
-  logger.info(`Admin listening on port ${adminPort}`)
+http.createServer(app).listen(80, () => {
+  logger.info('Admin listening on http://admin.nodedns/')
+})
+
+https.createServer(httpsOptions, app).listen(443, () => {
+  logger.info('Admin listening on https://admin.nodedns/')
 })
