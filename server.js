@@ -77,8 +77,11 @@ app.post('/api/set', (req, res) => {
 
 app.get('/api/get/:listname', (req, res) => {
   let listname = req.params.listname
+  console.log('caught get list', req.params)
+  console.log('validList()', config.validList(listname))
   if (config.validList(listname)) {
     res.json(config.getList(listname))
+    console.log('list content', config.getList(listname))
   } else {
     res.sendStatus(400)
   }
@@ -122,11 +125,11 @@ app.all('*', (req, res) => {
       }
       data.blockedUrls = Object.keys(config.getList('blacklist')).length - 1
       data.settings = config.get()
-      console.log(data)
+      // console.log(data)
       res.render('index', data)
     })
   } else {
-    res.status(404).end()
+    res.status(500).end()
   }
 })
 

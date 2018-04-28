@@ -6,7 +6,11 @@ Filter adverts and other domains out of your web browsing experience - mobile, d
 
 This project requires Node >=6 and npm 2
 
-Run `npm install -g node-dns-filter` (may require `sudo` in some cases for global install)
+```
+$ git clone https://github.com/jack828/NodeDNSFilter.git
+$ cd NodeDNSFilter
+$ yarn install
+```
 
 ## Update Domain Lists
 
@@ -22,14 +26,12 @@ You can do this manually if you so desire, but make sure the list is URLs only, 
 
 ## Running
 
-I'd recommend using a tool like `nodemon` to keep the process alive (or use your favourite alternative).
-
 This requires `sudo` as port 53 is a privileged port.
 
 Run with:
 
 ```
-sudo nodemon node-dns
+sudo yarn run [dev|start]
 ```
 
 Now point your DNS settings to the IP address of whatever is running this program.
